@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מפת עלויות ותקבולים - רכב נכים יונדאי סטאריה</title>
+<style>
+  :root {
+    --navy:#1F3864; --blue:#2E5496; --light:#D9E1F2;
+    --green:#1e7d43; --green-bg:#e4f7ec; --red:#b02a37; --red-bg:#fdeaec;
+    --amber:#946200; --amber-bg:#fff4d6; --grey:#f6f7fb; --border:#d9dee8;
+  }
+  * { box-sizing:border-box; }
+  body { font-family:'Segoe UI','Assistant',Arial,sans-serif; background:#eef1f7; color:#1c2333; margin:0; padding:32px; }
+  .sheet { max-width:1040px; margin:0 auto; background:#fff; border-radius:14px; box-shadow:0 10px 30px rgba(31,56,100,.12); overflow:hidden; }
+  header.hdr { background:linear-gradient(135deg,var(--navy),var(--blue)); color:#fff; padding:26px 32px 8px; }
+  header.hdr h1 { margin:0; font-size:23px; }
+  header.hdr .sub { margin-top:6px; font-size:13px; opacity:.9; }
+  .cars { display:flex; align-items:center; justify-content:center; gap:20px; padding:18px 24px 26px; flex-wrap:wrap; direction:ltr; }
+  .car { text-align:center; }
+  .car img { width:200px; max-width:44vw; height:120px; object-fit:contain; border-radius:10px; background:#fff; padding:6px; box-shadow:0 6px 14px rgba(0,0,0,.22); }
+  .car .cap { margin-top:6px; font-size:14px; font-weight:600; color:#fff; }
+  .car .tag { font-size:11px; color:#ffe9a8; }
+  .arrow { display:flex; flex-direction:column; align-items:center; color:#ffe9a8; }
+  .arrow .a { font-size:40px; line-height:1; }
+  .arrow .t { font-size:11px; color:#fff; opacity:.85; }
+  .summary { display:flex; gap:16px; padding:24px 32px 8px; flex-wrap:wrap; }
+  .card { flex:1; min-width:180px; border-radius:12px; padding:16px 20px; border:1px solid var(--border); }
+  .card .lbl { font-size:13px; color:#5b6478; margin-bottom:6px; }
+  .card .val { font-size:23px; font-weight:700; }
+  .card.out { background:var(--red-bg); } .card.out .val { color:var(--red); }
+  .card.in { background:var(--green-bg); } .card.in .val { color:var(--green); }
+  .card.net { background:var(--light); border-color:var(--blue); } .card.net .val { color:var(--navy); }
+  .section-title { padding:18px 32px 0; font-size:16px; color:var(--navy); font-weight:700; }
+  table.ledger { width:calc(100% - 64px); margin:8px 32px 0; border-collapse:collapse; }
+  table.ledger thead th { background:var(--blue); color:#fff; padding:11px 8px; font-size:13px; }
+  table.ledger tbody td { padding:9px 8px; border-bottom:1px solid var(--border); font-size:13.5px; text-align:right; }
+  table.ledger tbody td.num { text-align:center; color:#8891a5; }
+  table.ledger tbody td.money, table.ledger td.status { text-align:center; white-space:nowrap; }
+  table.ledger tbody tr:nth-child(even) { background:var(--grey); }
+  table.ledger tbody tr.expected { opacity:.9; }
+  .chip-out { background:var(--red-bg); color:var(--red); padding:4px 10px; border-radius:20px; font-weight:600; }
+  .chip-in { background:var(--green-bg); color:var(--green); padding:4px 10px; border-radius:20px; font-weight:600; }
+  .badge { padding:3px 10px; border-radius:20px; font-size:11.5px; font-weight:600; }
+  .b-done { background:var(--green-bg); color:var(--green); }
+  .b-expected { background:var(--amber-bg); color:var(--amber); }
+  .doc-icon { text-decoration:none; font-size:14px; opacity:.7; }
+  .doc-icon:hover { opacity:1; }
+  td.empty { text-align:center; color:#8891a5; padding:28px; }
+  table.ledger tfoot td { padding:11px 8px; font-weight:700; font-size:14.5px; }
+  tfoot .tot-lbl { background:var(--navy); color:#fff; text-align:center; }
+  tfoot .tot-out { background:var(--red-bg); color:var(--red); text-align:center; }
+  tfoot .tot-in { background:var(--green-bg); color:var(--green); text-align:center; }
+  tfoot .net-lbl { background:var(--blue); color:#fff; text-align:center; }
+  tfoot .net-val { background:var(--light); color:var(--navy); text-align:center; font-size:16px; }
+  .panels { display:flex; gap:16px; padding:8px 32px; flex-wrap:wrap; }
+  .panel { flex:1; min-width:300px; background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-top:16px; }
+  .panel h3 { margin:0 0 12px; font-size:15px; color:var(--navy); }
+  .pr-list { display:flex; flex-direction:column; gap:8px; }
+  .pr-row { display:flex; justify-content:space-between; padding:9px 12px; border-radius:8px; background:var(--grey); font-size:14px; }
+  .pr-row.k-total { background:var(--navy); color:#fff; }
+  .pr-row.k-paid { background:var(--red-bg); color:var(--red); }
+  .pr-row.k-benefit { background:var(--green-bg); color:var(--green); }
+  .pr-row.k-due { background:var(--blue); color:#fff; font-size:15px; }
+  table.cmp-tbl { width:100%; border-collapse:collapse; font-size:13px; }
+  table.cmp-tbl th { background:var(--blue); color:#fff; padding:9px 8px; text-align:center; }
+  table.cmp-tbl th.sn { background:var(--navy); }
+  table.cmp-tbl td { padding:8px; border-bottom:1px solid var(--border); text-align:right; vertical-align:top; }
+  table.cmp-tbl td.sk { font-weight:700; color:var(--navy); background:var(--grey); white-space:nowrap; }
+  table.cmp-tbl td.sn { background:#eef3fb; }
+  table.cmp-tbl tr:nth-child(even) td.so { background:#fafbfe; }
+  table.acc-tbl { width:100%; border-collapse:collapse; font-size:13px; }
+  table.acc-tbl th { background:var(--blue); color:#fff; padding:8px; }
+  table.acc-tbl td { padding:7px 8px; border-bottom:1px solid var(--border); text-align:right; }
+  table.acc-tbl td.num { text-align:center; color:#8891a5; }
+  table.acc-tbl td.money { text-align:center; white-space:nowrap; }
+  table.acc-tbl tfoot td { font-weight:700; }
+  .acc-total td { background:var(--light); }
+  .acc-btl td { background:var(--green-bg); color:var(--green); }
+  .acc-user td { background:var(--red-bg); color:var(--red); }
+  .doc-groups { display:flex; gap:24px; flex-wrap:wrap; }
+  .doc-group { flex:1; min-width:220px; }
+  .doc-group h4 { margin:0 0 6px; font-size:13px; color:var(--blue); }
+  .doc-group ul { margin:0; padding-inline-start:18px; }
+  .doc-group li { font-size:12.5px; line-height:1.9; }
+  .doc-link { color:var(--navy); text-decoration:none; border-bottom:1px dotted var(--blue); }
+  .doc-link:hover { color:var(--blue); }
+  .doc-date { color:#9aa4b6; font-size:11px; }
+  .notes { padding:8px 32px 8px; }
+  .notes h3 { margin:16px 0 8px; font-size:15px; color:var(--navy); }
+  .notes ul { margin:0; padding-inline-start:20px; color:#3a4257; font-size:12.5px; line-height:1.8; }
+  footer.ft { padding:16px 32px 28px; color:#8891a5; font-size:12px; display:flex; justify-content:space-between; align-items:center; }
+  .btn-print { background:var(--blue); color:#fff; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; font-size:14px; }
+  @media print {
+    body { background:#fff; padding:0; }
+    .sheet { box-shadow:none; border-radius:0; max-width:100%; }
+    .btn-print { display:none; }
+    .panel, .card { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <header class="hdr">
+      <h1>מפת עלויות ותקבולים - רכב נכים יונדאי סטאריה</h1>
+      <div class="sub">רכב נכים — מוגבל/ת בניידות (פרטים אישיים הוסתרו)</div>
+      <div class="cars">
+        <div class="car">
+          <img src="assets/staria.png" alt="יונדאי סטאריה (Hyundai Staria)">
+          <div class="cap">יונדאי סטאריה (Hyundai Staria)</div>
+          <div class="tag">הרכב החדש</div>
+        </div>
+        <div class="arrow">
+          <div class="a">&#10229;</div>
+          <div class="t">החלפה</div>
+        </div>
+        <div class="car">
+          <img src="assets/caravelle.png" alt="פולקסוואגן קראוול (VW Caravelle)">
+          <div class="cap">פולקסוואגן קראוול (VW Caravelle)</div>
+          <div class="tag">הרכב המוחלף</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="summary">
+      <div class="card out"><div class="lbl">סה"כ תשלומים ששילמתי</div><div class="val">276,832.48 ₪</div></div>
+      <div class="card in"><div class="lbl">סה"כ תקבולים שהתקבלו</div><div class="val">253,254.91 ₪</div></div>
+      <div class="card net"><div class="lbl">עלות נטו עבורי</div><div class="val">23,577.57 ₪</div></div>
+    </section>
+
+    <div class="section-title">טבלת תשלומים ותקבולים</div>
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th>#</th><th>תאריך</th><th>מס' אסמכתה</th><th>גורם</th>
+          <th>תיאור</th><th>סטטוס</th>
+          <th>תשלום ששילמתי (₪)</th><th>תקבול שהתקבל (₪)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class=''><td class='num'>1</td><td>2026-03-23</td><td>•••</td><td>כלמוביל</td><td class='desc'>שריון רכב (יונדאי סטאריה) - העברה בנקאית מבנק הפועלים </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'><span class='chip-out'>2,000.00</span></td><td class='money in'></td></tr>
+        <tr class=''><td class='num'>2</td><td>2026-06-15</td><td>•••</td><td>כלמוביל</td><td class='desc'>מקדמה 20% ממחיר הרכב - העברה בנקאית מבנק לאומי (קבלה •••) </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'><span class='chip-out'>40,000.00</span></td><td class='money in'></td></tr>
+        <tr class='expected'><td class='num'>3</td><td>2026-07-08</td><td>—</td><td>ביטוח לאומי</td><td class='desc'>מקדמה מהלוואה מקרן הלוואות (90%) - מועבר לחשבון הבנק תוך 7 ימים </td><td class='status'><span class='badge b-expected'>צפוי</span></td><td class='money out'></td><td class='money in'><span class='chip-in'>60,595.00</span></td></tr>
+        <tr class='expected'><td class='num'>4</td><td>—</td><td>—</td><td>כלמוביל</td><td class='desc'>יתרה לתשלום עבור הרכב (לאחר מקדמה ופטור) </td><td class='status'><span class='badge b-expected'>צפוי</span></td><td class='money out'><span class='chip-out'>183,401.00</span></td><td class='money in'></td></tr>
+        <tr class='expected'><td class='num'>5</td><td>—</td><td>—</td><td>מכירת רכב קיים</td><td class='desc'>מכירת הרכב הקיים - פולקסווגן קראוול 2021, 4X2 Comfortline 2.0 (150 כ&quot;ס), ~70,000 ק&quot;מ, ללא פגיעות, שמור מאוד (הערכת מחירון יד2 - יעודכן לפי מכירה בפועל) </td><td class='status'><span class='badge b-expected'>צפוי</span></td><td class='money out'></td><td class='money in'><span class='chip-in'>143,800.00</span></td></tr>
+        <tr class='expected'><td class='num'>6</td><td>—</td><td>—</td><td>אצ&quot;מ</td><td class='desc'>תשלום לאצ&quot;מ עבור אבזור נכים (מלוא מחירון האבזרים - הערכה, יעודכן לפי הצעת מחיר בפועל של אצ&quot;מ) </td><td class='status'><span class='badge b-expected'>צפוי</span></td><td class='money out'><span class='chip-out'>51,431.48</span></td><td class='money in'></td></tr>
+        <tr class='expected'><td class='num'>7</td><td>—</td><td>—</td><td>ביטוח לאומי</td><td class='desc'>החזר ביטוח לאומי עבור אבזור נכים (95%) - מועבר אליי ואני מעביר לאצ&quot;מ </td><td class='status'><span class='badge b-expected'>צפוי</span></td><td class='money out'></td><td class='money in'><span class='chip-in'>48,859.91</span></td></tr>
+        <tr class='expected'><td class='num'>8</td><td>—</td><td>—</td><td>אחר</td><td class='desc'>תג חניה לנכה / הסרת הנחה באגרת רישוי (נושא שעלה ברכב הקודם - יעודכן בהתאם) </td><td class='status'><span class='badge b-expected'>צפוי</span></td><td class='money out'><span class='chip-out'>0.00</span></td><td class='money in'></td></tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="tot-lbl" colspan="6">סה"כ</td>
+          <td class="tot-out">276,832.48 ₪</td>
+          <td class="tot-in">253,254.91 ₪</td>
+        </tr>
+        <tr>
+          <td class="net-lbl" colspan="6">עלות נטו עבורי (תשלומים פחות תקבולים)</td>
+          <td class="net-val" colspan="2">23,577.57 ₪</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="panels">
+      <div class='panel'><h3>פירוט מחיר הרכב (עדכני מכלמוביל)</h3><div class='pr-list'><div class='pr-row k-total'><span>מחיר הרכב</span><b>330,030.00 ₪</b></div><div class='pr-row k-paid'><span>מקדמה ששולמה</span><b>42,000.00 ₪</b></div><div class='pr-row k-benefit'><span>פטור / הלוואה עומדת (ביטוח לאומי)</span><b>104,629.00 ₪</b></div><div class='pr-row k-due'><span>יתרה לתשלום</span><b>183,401.00 ₪</b></div></div></div>
+      <div class='panel'><h3>אבזור נכים (אצ&quot;מ / ביטוח לאומי)</h3><table class='acc-tbl'><thead><tr><th>קוד</th><th>אביזר</th><th>מחיר</th></tr></thead><tbody><tr><td class='num'>7</td><td>רצפת עץ וציפוי נגד החלקה</td><td class='money'>3,506.96 ₪</td></tr><tr><td class='num'>11</td><td>מעלית פנימית</td><td class='money'>32,340.26 ₪</td></tr><tr><td class='num'>25</td><td>נועל כסא גלגלים או מיטה בעמדת הסעה</td><td class='money'>3,431.44 ₪</td></tr><tr><td class='num'>55</td><td>חגורת בטיחות בעמדת הסעה</td><td class='money'>1,052.56 ₪</td></tr><tr><td class='num'>417</td><td>מושב מתקפל לדופן למלווה כולל חגורת בטיחות</td><td class='money'>11,100.26 ₪</td></tr></tbody><tfoot><tr class='acc-total'><td colspan='2'>סה"כ מחירון</td><td class='money'>51,431.48 ₪</td></tr><tr class='acc-btl'><td colspan='2'>חלק ביטוח לאומי (95%)</td><td class='money'>48,859.91 ₪</td></tr><tr class='acc-user'><td colspan='2'>השתתפות עצמית (5%)</td><td class='money'>2,571.57 ₪</td></tr></tfoot></table></div>
+    </div>
+
+    <div class="panels">
+      <div class='panel'><h3>השוואת מפרט: קראוול (מוחלף) מול סטאריה (חדש)</h3><table class='cmp-tbl'><thead><tr><th>פרמטר</th><th class='so'>פולקסוואגן קראוול 2021</th><th class='sn'>יונדאי סטאריה 2026</th></tr></thead><tbody><tr><td class='sk'>דגם/גרסה</td><td class='so'>קראוול קומפורטליין ארוך</td><td class='sn'>Staria Hybrid, Luxury T - G207</td></tr><tr><td class='sk'>סוג הנעה</td><td class='so'>דיזל (2.0 TDI BMT)</td><td class='sn'>היברידי: בנזין 1.6 T-GDI + חשמלי</td></tr><tr><td class='sk'>נפח מנוע</td><td class='so'>1,968 סמ&quot;ק</td><td class='sn'>1,598 סמ&quot;ק</td></tr><tr><td class='sk'>הספק</td><td class='so'>150 כ&quot;ס</td><td class='sn'>225 כ&quot;ס (משולב)</td></tr><tr><td class='sk'>מומנט</td><td class='so'>340 נ&quot;מ</td><td class='sn'>37.4 קג&quot;מ (~367 נ&quot;מ, משולב)</td></tr><tr><td class='sk'>תיבת הילוכים</td><td class='so'>אוטומט 7 הילוכים (DSG)</td><td class='sn'>אוטומט 6 הילוכים</td></tr><tr><td class='sk'>צריכת דלק משולבת</td><td class='so'>7.6 ליטר/100 ק&quot;מ</td><td class='sn'>7.6 ליטר/100 ק&quot;מ</td></tr><tr><td class='sk'>מספר מושבים</td><td class='so'>עד 9 (ואן נוסעים)</td><td class='sn'>9 (1+8)</td></tr><tr><td class='sk'>אורך</td><td class='so'>5,304 מ&quot;מ</td><td class='sn'>5,255 מ&quot;מ</td></tr><tr><td class='sk'>רוחב</td><td class='so'>1,904 מ&quot;מ</td><td class='sn'>1,970 מ&quot;מ</td></tr><tr><td class='sk'>גובה</td><td class='so'>1,990 מ&quot;מ</td><td class='sn'>1,990 מ&quot;מ</td></tr><tr><td class='sk'>בסיס גלגלים</td><td class='so'>3,400 מ&quot;מ</td><td class='sn'>3,275 מ&quot;מ</td></tr><tr><td class='sk'>נפח תא מטען</td><td class='so'>עד 5,000 ל&#x27; (מאחורי שורה ראשונה)</td><td class='sn'>עד 1,303 ל&#x27;</td></tr><tr><td class='sk'>כושר גרירה (עם בלמים)</td><td class='so'>2,500 ק&quot;ג</td><td class='sn'>לא צוין</td></tr><tr><td class='sk'>בטיחות</td><td class='so'>2 כריות אוויר, Mobileye 630 (התקנה מקומית), ניטור לחץ אוויר</td><td class='sn'>6 כריות אוויר, SCC, LKA/LFA, FCA בלימת חירום, מערך 360°</td></tr><tr><td class='sk'>מולטימדיה</td><td class='so'>מסך מגע 6.5&quot;, App Connect (CarPlay/Android Auto)</td><td class='sn'>מסך 10.25&quot; + לוח מחוונים דיגיטלי 10.25&quot;</td></tr></tbody></table></div>
+    </div>
+
+    <div class="panels">
+      
+    </div>
+
+    <section class="notes">
+      <h3>הערות</h3>
+      <ul><li>כלמוביל - החברה ממנה נרכש הרכב החדש (יונדאי סטאריה).</li><li>אצ&quot;מ (א.צ.מ צפון בע&quot;מ) - החברה הממתקנת את הרכב באבזרי נכים. ביטוח לאומי מעביר לי את הסכום ואני מעביר לאצ&quot;מ.</li><li>ביטוח לאומי (ניידות) - מעביר הטבות: הלוואה עומדת (פטור ממסים), הלוואה מקרן הלוואות, והלוואה לאבזרים.</li><li>פטור / הלוואה עומדת מקוזז ישירות מול מחיר הרכב בכלמוביל (הנחה) ולכן אינו נספר כתקבול מזומן בטבלה, אלא מוצג בפירוט מחיר הרכב.</li><li>הלוואה מקרן הלוואות והלוואה עומדת הופכות למענק (אין להחזירן) בהתקיים התנאים.</li><li>מתקון (אצ&quot;מ): התשלום מתבצע בשלבים - מקדמה/פיקדון לאצ&quot;מ, תשלום ראשון של בל&quot;ל בגובה 65% מעלות האבזרים ללא מע&quot;מ, ותשלום/השלמה סופי בגמר האבזור. בל&quot;ל מעביר אליי ואני מעביר לאצ&quot;מ. עלותי הנטו על האבזור = ההשתתפות העצמית (5%).</li><li>לאחר שחרור הרכב מהמכס וסיום האבזור בל&quot;ל עורך חישוב סופי - ייתכן תשלום השלמה לזכותי או קיזוז של סכום עודף (כפי שהיה גם ברכב הקודם).</li><li>נושאים מהרכב הקודם (החלפת קאדי בקראוול, 2021) שמובאים בחשבון גם כאן: הפרדה בין עלויות הרכב לעלויות המתקון; הבחנה בין מי ששילם (אני / בל&quot;ל ישירות לחברה / בל&quot;ל לחשבוני); תג חניה לנכה והנחה באגרת רישוי; ומכירת הרכב הקודם כתקבול.</li><li>הערכת מכירת הקראוול לפי מחירון יד2 (פולקסווגן קראוול 2021, 4X2 Comfortline, 2.0 150 כ&quot;ס): 143,800 ₪. מדובר במחיר מחירון; מחיר מכירה בפועל עשוי להיות מעט שונה. לשם השוואה, ביטוח לאומי השתמש ב&quot;מחיר רכב קודם&quot; של 91,800 ₪ (ערך ספר מופחת לרכב נכים) בחישוב ההלוואה.</li><li>עלות נטו = סך התשלומים ששילמתי בפועל פחות סך התקבולים שקיבלתי (הלוואות/מענקים ומכירת הרכב הישן).</li></ul>
+    </section>
+
+    <footer class="ft">
+      <span>עודכן לאחרונה: 09/07/2026 15:20</span>
+      <button class="btn-print" onclick="window.print()">הדפס / שמור כ-PDF</button>
+    </footer>
+  </div>
+</body>
+</html>
