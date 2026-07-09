@@ -32,7 +32,9 @@
   .card.in { background:var(--green-bg); } .card.in .val { color:var(--green); }
   .card.net { background:var(--light); border-color:var(--blue); } .card.net .val { color:var(--navy); }
   .section-title { padding:18px 32px 0; font-size:16px; color:var(--navy); font-weight:700; }
-  table.ledger { width:calc(100% - 64px); margin:8px 32px 0; border-collapse:collapse; }
+  .tbl-wrap { margin:8px 32px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table.ledger { width:100%; min-width:640px; margin:0; border-collapse:collapse; }
   table.ledger thead th { background:var(--blue); color:#fff; padding:11px 8px; font-size:13px; }
   table.ledger tbody td { padding:9px 8px; border-bottom:1px solid var(--border); font-size:13.5px; text-align:right; }
   table.ledger tbody td.num { text-align:center; color:#8891a5; }
@@ -62,14 +64,14 @@
   .pr-row.k-paid { background:var(--red-bg); color:var(--red); }
   .pr-row.k-benefit { background:var(--green-bg); color:var(--green); }
   .pr-row.k-due { background:var(--blue); color:#fff; font-size:15px; }
-  table.cmp-tbl { width:100%; border-collapse:collapse; font-size:13px; }
+  table.cmp-tbl { width:100%; min-width:440px; border-collapse:collapse; font-size:13px; }
   table.cmp-tbl th { background:var(--blue); color:#fff; padding:9px 8px; text-align:center; }
   table.cmp-tbl th.sn { background:var(--navy); }
   table.cmp-tbl td { padding:8px; border-bottom:1px solid var(--border); text-align:right; vertical-align:top; }
   table.cmp-tbl td.sk { font-weight:700; color:var(--navy); background:var(--grey); white-space:nowrap; }
   table.cmp-tbl td.sn { background:#eef3fb; }
   table.cmp-tbl tr:nth-child(even) td.so { background:#fafbfe; }
-  table.acc-tbl { width:100%; border-collapse:collapse; font-size:13px; }
+  table.acc-tbl { width:100%; min-width:300px; border-collapse:collapse; font-size:13px; }
   table.acc-tbl th { background:var(--blue); color:#fff; padding:8px; }
   table.acc-tbl td { padding:7px 8px; border-bottom:1px solid var(--border); text-align:right; }
   table.acc-tbl td.num { text-align:center; color:#8891a5; }
@@ -96,6 +98,32 @@
     .sheet { box-shadow:none; border-radius:0; max-width:100%; }
     .btn-print { display:none; }
     .panel, .card { break-inside:avoid; }
+  }
+  @media (max-width:600px) {
+    body { padding:6px; }
+    .sheet { border-radius:10px; }
+    header.hdr { padding:16px 12px 4px; }
+    header.hdr h1 { font-size:18px; }
+    header.hdr .sub { font-size:11.5px; }
+    .cars { gap:8px; padding:10px 4px 14px; flex-wrap:nowrap; }
+    .car img { width:120px; height:74px; padding:4px; max-width:40vw; }
+    .car .cap { font-size:11px; }
+    .car .tag { font-size:9.5px; }
+    .arrow .a { font-size:24px; }
+    .arrow .t { font-size:9.5px; }
+    .summary { gap:8px; padding:12px 10px 4px; }
+    .card { min-width:0; flex:1 1 30%; padding:10px 8px; border-radius:10px; }
+    .card .lbl { font-size:10.5px; }
+    .card .val { font-size:15px; }
+    .section-title { padding:14px 12px 0; font-size:14px; }
+    .tbl-wrap { margin:8px 10px 0; }
+    table.ledger thead th { padding:8px 6px; font-size:11.5px; }
+    table.ledger tbody td { padding:7px 6px; font-size:11.5px; }
+    table.ledger tfoot td { padding:8px 6px; font-size:12px; }
+    .panels { padding:6px 10px; gap:10px; }
+    .panel { min-width:0; padding:12px 12px; margin-top:12px; }
+    .notes { padding:6px 12px; }
+    footer.ft { padding:12px 12px 20px; flex-direction:column; gap:10px; }
   }
 </style>
 </head>
@@ -129,6 +157,7 @@
     </section>
 
     <div class="section-title">טבלת תשלומים ותקבולים</div>
+    <div class="tbl-wrap">
     <table class="ledger">
       <thead>
         <tr>
@@ -159,14 +188,15 @@
         </tr>
       </tfoot>
     </table>
-
-    <div class="panels">
-      <div class='panel'><h3>פירוט מחיר הרכב (עדכני מכלמוביל)</h3><div class='pr-list'><div class='pr-row k-total'><span>מחיר הרכב</span><b>330,030.00 ₪</b></div><div class='pr-row k-paid'><span>מקדמה ששולמה</span><b>42,000.00 ₪</b></div><div class='pr-row k-benefit'><span>פטור / הלוואה עומדת (ביטוח לאומי)</span><b>104,629.00 ₪</b></div><div class='pr-row k-due'><span>יתרה לתשלום</span><b>183,401.00 ₪</b></div></div></div>
-      <div class='panel'><h3>אבזור נכים (אצ&quot;מ / ביטוח לאומי)</h3><table class='acc-tbl'><thead><tr><th>קוד</th><th>אביזר</th><th>מחיר</th></tr></thead><tbody><tr><td class='num'>7</td><td>רצפת עץ וציפוי נגד החלקה</td><td class='money'>3,506.96 ₪</td></tr><tr><td class='num'>11</td><td>מעלית פנימית</td><td class='money'>32,340.26 ₪</td></tr><tr><td class='num'>25</td><td>נועל כסא גלגלים או מיטה בעמדת הסעה</td><td class='money'>3,431.44 ₪</td></tr><tr><td class='num'>55</td><td>חגורת בטיחות בעמדת הסעה</td><td class='money'>1,052.56 ₪</td></tr><tr><td class='num'>417</td><td>מושב מתקפל לדופן למלווה כולל חגורת בטיחות</td><td class='money'>11,100.26 ₪</td></tr></tbody><tfoot><tr class='acc-total'><td colspan='2'>סה"כ מחירון</td><td class='money'>51,431.48 ₪</td></tr><tr class='acc-btl'><td colspan='2'>חלק ביטוח לאומי (95%)</td><td class='money'>48,859.91 ₪</td></tr><tr class='acc-user'><td colspan='2'>השתתפות עצמית (5%)</td><td class='money'>2,571.57 ₪</td></tr></tfoot></table></div>
     </div>
 
     <div class="panels">
-      <div class='panel'><h3>השוואת מפרט: קראוול (מוחלף) מול סטאריה (חדש)</h3><table class='cmp-tbl'><thead><tr><th>פרמטר</th><th class='so'>פולקסוואגן קראוול 2021</th><th class='sn'>יונדאי סטאריה 2026</th></tr></thead><tbody><tr><td class='sk'>דגם/גרסה</td><td class='so'>קראוול קומפורטליין ארוך</td><td class='sn'>Staria Hybrid, Luxury T - G207</td></tr><tr><td class='sk'>סוג הנעה</td><td class='so'>דיזל (2.0 TDI BMT)</td><td class='sn'>היברידי: בנזין 1.6 T-GDI + חשמלי</td></tr><tr><td class='sk'>נפח מנוע</td><td class='so'>1,968 סמ&quot;ק</td><td class='sn'>1,598 סמ&quot;ק</td></tr><tr><td class='sk'>הספק</td><td class='so'>150 כ&quot;ס</td><td class='sn'>225 כ&quot;ס (משולב)</td></tr><tr><td class='sk'>מומנט</td><td class='so'>340 נ&quot;מ</td><td class='sn'>37.4 קג&quot;מ (~367 נ&quot;מ, משולב)</td></tr><tr><td class='sk'>תיבת הילוכים</td><td class='so'>אוטומט 7 הילוכים (DSG)</td><td class='sn'>אוטומט 6 הילוכים</td></tr><tr><td class='sk'>צריכת דלק משולבת</td><td class='so'>7.6 ליטר/100 ק&quot;מ</td><td class='sn'>7.6 ליטר/100 ק&quot;מ</td></tr><tr><td class='sk'>מספר מושבים</td><td class='so'>עד 9 (ואן נוסעים)</td><td class='sn'>9 (1+8)</td></tr><tr><td class='sk'>אורך</td><td class='so'>5,304 מ&quot;מ</td><td class='sn'>5,255 מ&quot;מ</td></tr><tr><td class='sk'>רוחב</td><td class='so'>1,904 מ&quot;מ</td><td class='sn'>1,970 מ&quot;מ</td></tr><tr><td class='sk'>גובה</td><td class='so'>1,990 מ&quot;מ</td><td class='sn'>1,990 מ&quot;מ</td></tr><tr><td class='sk'>בסיס גלגלים</td><td class='so'>3,400 מ&quot;מ</td><td class='sn'>3,275 מ&quot;מ</td></tr><tr><td class='sk'>נפח תא מטען</td><td class='so'>עד 5,000 ל&#x27; (מאחורי שורה ראשונה)</td><td class='sn'>עד 1,303 ל&#x27;</td></tr><tr><td class='sk'>כושר גרירה (עם בלמים)</td><td class='so'>2,500 ק&quot;ג</td><td class='sn'>לא צוין</td></tr><tr><td class='sk'>בטיחות</td><td class='so'>2 כריות אוויר, Mobileye 630 (התקנה מקומית), ניטור לחץ אוויר</td><td class='sn'>6 כריות אוויר, SCC, LKA/LFA, FCA בלימת חירום, מערך 360°</td></tr><tr><td class='sk'>מולטימדיה</td><td class='so'>מסך מגע 6.5&quot;, App Connect (CarPlay/Android Auto)</td><td class='sn'>מסך 10.25&quot; + לוח מחוונים דיגיטלי 10.25&quot;</td></tr></tbody></table></div>
+      <div class='panel'><h3>פירוט מחיר הרכב (עדכני מכלמוביל)</h3><div class='pr-list'><div class='pr-row k-total'><span>מחיר הרכב</span><b>330,030.00 ₪</b></div><div class='pr-row k-paid'><span>מקדמה ששולמה</span><b>42,000.00 ₪</b></div><div class='pr-row k-benefit'><span>פטור / הלוואה עומדת (ביטוח לאומי)</span><b>104,629.00 ₪</b></div><div class='pr-row k-due'><span>יתרה לתשלום</span><b>183,401.00 ₪</b></div></div></div>
+      <div class='panel'><h3>אבזור נכים (אצ&quot;מ / ביטוח לאומי)</h3><div class='scroll'><table class='acc-tbl'><thead><tr><th>קוד</th><th>אביזר</th><th>מחיר</th></tr></thead><tbody><tr><td class='num'>7</td><td>רצפת עץ וציפוי נגד החלקה</td><td class='money'>3,506.96 ₪</td></tr><tr><td class='num'>11</td><td>מעלית פנימית</td><td class='money'>32,340.26 ₪</td></tr><tr><td class='num'>25</td><td>נועל כסא גלגלים או מיטה בעמדת הסעה</td><td class='money'>3,431.44 ₪</td></tr><tr><td class='num'>55</td><td>חגורת בטיחות בעמדת הסעה</td><td class='money'>1,052.56 ₪</td></tr><tr><td class='num'>417</td><td>מושב מתקפל לדופן למלווה כולל חגורת בטיחות</td><td class='money'>11,100.26 ₪</td></tr></tbody><tfoot><tr class='acc-total'><td colspan='2'>סה"כ מחירון</td><td class='money'>51,431.48 ₪</td></tr><tr class='acc-btl'><td colspan='2'>חלק ביטוח לאומי (95%)</td><td class='money'>48,859.91 ₪</td></tr><tr class='acc-user'><td colspan='2'>השתתפות עצמית (5%)</td><td class='money'>2,571.57 ₪</td></tr></tfoot></table></div></div>
+    </div>
+
+    <div class="panels">
+      <div class='panel'><h3>השוואת מפרט: קראוול (מוחלף) מול סטאריה (חדש)</h3><div class='scroll'><table class='cmp-tbl'><thead><tr><th>פרמטר</th><th class='so'>פולקסוואגן קראוול 2021</th><th class='sn'>יונדאי סטאריה 2026</th></tr></thead><tbody><tr><td class='sk'>דגם/גרסה</td><td class='so'>קראוול קומפורטליין ארוך</td><td class='sn'>Staria Hybrid, Luxury T - G207</td></tr><tr><td class='sk'>סוג הנעה</td><td class='so'>דיזל (2.0 TDI BMT)</td><td class='sn'>היברידי: בנזין 1.6 T-GDI + חשמלי</td></tr><tr><td class='sk'>נפח מנוע</td><td class='so'>1,968 סמ&quot;ק</td><td class='sn'>1,598 סמ&quot;ק</td></tr><tr><td class='sk'>הספק</td><td class='so'>150 כ&quot;ס</td><td class='sn'>225 כ&quot;ס (משולב)</td></tr><tr><td class='sk'>מומנט</td><td class='so'>340 נ&quot;מ</td><td class='sn'>37.4 קג&quot;מ (~367 נ&quot;מ, משולב)</td></tr><tr><td class='sk'>תיבת הילוכים</td><td class='so'>אוטומט 7 הילוכים (DSG)</td><td class='sn'>אוטומט 6 הילוכים</td></tr><tr><td class='sk'>צריכת דלק משולבת</td><td class='so'>7.6 ליטר/100 ק&quot;מ</td><td class='sn'>7.6 ליטר/100 ק&quot;מ</td></tr><tr><td class='sk'>מספר מושבים</td><td class='so'>עד 9 (ואן נוסעים)</td><td class='sn'>9 (1+8)</td></tr><tr><td class='sk'>אורך</td><td class='so'>5,304 מ&quot;מ</td><td class='sn'>5,255 מ&quot;מ</td></tr><tr><td class='sk'>רוחב</td><td class='so'>1,904 מ&quot;מ</td><td class='sn'>1,970 מ&quot;מ</td></tr><tr><td class='sk'>גובה</td><td class='so'>1,990 מ&quot;מ</td><td class='sn'>1,990 מ&quot;מ</td></tr><tr><td class='sk'>בסיס גלגלים</td><td class='so'>3,400 מ&quot;מ</td><td class='sn'>3,275 מ&quot;מ</td></tr><tr><td class='sk'>נפח תא מטען</td><td class='so'>עד 5,000 ל&#x27; (מאחורי שורה ראשונה)</td><td class='sn'>עד 1,303 ל&#x27;</td></tr><tr><td class='sk'>כושר גרירה (עם בלמים)</td><td class='so'>2,500 ק&quot;ג</td><td class='sn'>לא צוין</td></tr><tr><td class='sk'>בטיחות</td><td class='so'>2 כריות אוויר, Mobileye 630 (התקנה מקומית), ניטור לחץ אוויר</td><td class='sn'>6 כריות אוויר, SCC, LKA/LFA, FCA בלימת חירום, מערך 360°</td></tr><tr><td class='sk'>מולטימדיה</td><td class='so'>מסך מגע 6.5&quot;, App Connect (CarPlay/Android Auto)</td><td class='sn'>מסך 10.25&quot; + לוח מחוונים דיגיטלי 10.25&quot;</td></tr></tbody></table></div></div>
     </div>
 
     <div class="panels">
@@ -179,7 +209,7 @@
     </section>
 
     <footer class="ft">
-      <span>עודכן לאחרונה: 09/07/2026 15:20</span>
+      <span>עודכן לאחרונה: 09/07/2026 16:33</span>
       <button class="btn-print" onclick="window.print()">הדפס / שמור כ-PDF</button>
     </footer>
   </div>
