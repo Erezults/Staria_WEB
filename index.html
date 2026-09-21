@@ -32,13 +32,26 @@
   .card.in { background:var(--green-bg); } .card.in .val { color:var(--green); }
   .card.net { background:var(--light); border-color:var(--blue); } .card.net .val { color:var(--navy); }
   .section-title { padding:18px 32px 0; font-size:16px; color:var(--navy); font-weight:700; }
-  .tbl-wrap { margin:8px 32px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; }
-  .scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
-  table.ledger { width:100%; min-width:640px; margin:0; border-collapse:collapse; }
+  .tbl-wrap { margin:8px 32px 0; }
+  .scroll { }
+  table.ledger { width:100%; margin:0; border-collapse:collapse; table-layout:fixed; }
+  table.ledger th:nth-child(1), table.ledger td.num { width:6%; }
+  table.ledger th:nth-child(2), table.ledger td.date { width:15%; }
+  table.ledger th:nth-child(3), table.ledger td.party { width:15%; }
+  table.ledger th:nth-child(5), table.ledger th:nth-child(6), table.ledger td.money { width:14%; }
+  table.ledger td.date span { font-weight:700; padding:3px 6px; border-radius:8px; display:inline-block; }
+  .d-done span, .lg.d-done { background:var(--green-bg); color:var(--green); }
+  .d-expected span, .lg.d-expected { background:var(--amber-bg); color:var(--amber); }
+  .d-info span, .lg.d-info { background:var(--grey); color:#555; }
+  .d-discount span, .lg.d-discount { background:var(--light); color:var(--navy); }
+  .legend { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:10px 32px 0; font-size:13px; }
+  .legend .lg { padding:3px 10px; border-radius:8px; font-weight:700; }
+  .legend .lg-note { color:#8891a5; font-size:12px; }
   table.ledger thead th { background:var(--blue); color:#fff; padding:11px 8px; font-size:13px; }
-  table.ledger tbody td { padding:9px 8px; border-bottom:1px solid var(--border); font-size:13.5px; text-align:right; }
+  table.ledger tbody td { padding:9px 6px; border-bottom:1px solid var(--border); font-size:13.5px; text-align:right; overflow-wrap:anywhere; vertical-align:top; }
   table.ledger tbody td.num { text-align:center; color:#8891a5; }
-  table.ledger tbody td.money, table.ledger td.status { text-align:center; white-space:nowrap; }
+  table.ledger tbody td.money { text-align:center; }
+  .chip-out, .chip-in { display:inline-block; }
   table.ledger tbody tr:nth-child(even) { background:var(--grey); }
   table.ledger tbody tr.expected { opacity:.9; }
   .chip-out { background:var(--red-bg); color:var(--red); padding:4px 10px; border-radius:20px; font-weight:600; }
@@ -70,18 +83,18 @@
   .pr-row.k-paid { background:var(--red-bg); color:var(--red); }
   .pr-row.k-benefit { background:var(--green-bg); color:var(--green); }
   .pr-row.k-due { background:var(--blue); color:#fff; font-size:15px; }
-  table.cmp-tbl { width:100%; min-width:440px; border-collapse:collapse; font-size:13px; }
+  table.cmp-tbl { width:100%; border-collapse:collapse; font-size:13px; table-layout:fixed; }
   table.cmp-tbl th { background:var(--blue); color:#fff; padding:9px 8px; text-align:center; }
   table.cmp-tbl th.sn { background:var(--navy); }
   table.cmp-tbl td { padding:8px; border-bottom:1px solid var(--border); text-align:right; vertical-align:top; }
-  table.cmp-tbl td.sk { font-weight:700; color:var(--navy); background:var(--grey); white-space:nowrap; }
+  table.cmp-tbl td.sk { font-weight:700; color:var(--navy); background:var(--grey); overflow-wrap:anywhere; }
   table.cmp-tbl td.sn { background:#eef3fb; }
   table.cmp-tbl tr:nth-child(even) td.so { background:#fafbfe; }
-  table.acc-tbl { width:100%; min-width:300px; border-collapse:collapse; font-size:13px; }
+  table.acc-tbl { width:100%; border-collapse:collapse; font-size:13px; }
   table.acc-tbl th { background:var(--blue); color:#fff; padding:8px; }
   table.acc-tbl td { padding:7px 8px; border-bottom:1px solid var(--border); text-align:right; }
   table.acc-tbl td.num { text-align:center; color:#8891a5; }
-  table.acc-tbl td.money { text-align:center; white-space:nowrap; }
+  table.acc-tbl td.money { text-align:center; }
   table.acc-tbl tfoot td { font-weight:700; }
   .acc-total td { background:var(--light); }
   .acc-btl td { background:var(--green-bg); color:var(--green); }
@@ -119,13 +132,21 @@
     .arrow .t { font-size:9.5px; }
     .summary { gap:8px; padding:12px 10px 4px; }
     .card { min-width:0; flex:1 1 30%; padding:10px 8px; border-radius:10px; }
-    .card .lbl { font-size:10.5px; }
-    .card .val { font-size:15px; }
+    .card { flex:1 1 100%; }
+    .card .lbl { font-size:12.5px; }
+    .card .val { font-size:19px; }
     .section-title { padding:14px 12px 0; font-size:14px; }
     .tbl-wrap { margin:8px 10px 0; }
-    table.ledger thead th { padding:8px 6px; font-size:11.5px; }
-    table.ledger tbody td { padding:7px 6px; font-size:11.5px; }
-    table.ledger tfoot td { padding:8px 6px; font-size:12px; }
+    .tbl-wrap { margin:8px 6px 0; }
+    .legend { margin:10px 8px 0; }
+    table.ledger thead th { padding:8px 3px; font-size:12.5px; }
+    table.ledger tbody td { padding:7px 3px; font-size:13px; }
+    table.ledger th:nth-child(1), table.ledger td.num { width:5%; }
+    table.ledger th:nth-child(2), table.ledger td.date { width:18%; }
+    table.ledger th:nth-child(3), table.ledger td.party { width:17%; }
+    table.ledger th:nth-child(5), table.ledger th:nth-child(6), table.ledger td.money { width:15%; }
+    .chip-out, .chip-in { padding:3px 5px; }
+    table.ledger tfoot td { padding:8px 3px; font-size:12.5px; }
     .panels { padding:6px 10px; gap:10px; }
     .panel { min-width:0; padding:12px 12px; margin-top:12px; }
     .notes { padding:6px 12px; }
@@ -157,54 +178,60 @@
     </header>
 
     <section class="summary">
-      <div class="card out"><div class="lbl">סה"כ תשלומים ששילמתי (כולל צפויים)</div><div class="val">277,344.91 ₪</div><div class="sub">מתוכם בוצע: 265,364.00 ₪</div></div>
-      <div class="card in"><div class="lbl">סה"כ תקבולים (כולל צפויים)</div><div class="val">251,187.69 ₪</div><div class="sub">מתוכם התקבל: 227,474.00 ₪</div></div>
-      <div class="card net"><div class="lbl">עלות נטו עבורי</div><div class="val">26,157.22 ₪</div><div class="sub">עודכן: 21.09.2026</div></div>
+      <div class="card out"><div class="lbl">סה"כ תשלומים ששילמתי (כולל צפויים)</div><div class="val">277,345 ₪</div><div class="sub">מתוכם בוצע: 265,364 ₪</div></div>
+      <div class="card in"><div class="lbl">סה"כ תקבולים (כולל צפויים)</div><div class="val">251,188 ₪</div><div class="sub">מתוכם התקבל: 227,474 ₪</div></div>
+      <div class="card net"><div class="lbl">עלות נטו עבורי</div><div class="val">26,157 ₪</div><div class="sub">עודכן: 21.09.2026</div></div>
     </section>
 
     <div class="section-title">טבלת תשלומים ותקבולים</div>
+    <div class="legend">
+      <span class="lg d-done">בוצע</span>
+      <span class="lg d-expected">צפוי</span>
+      <span class="lg d-info">לידיעה</span>
+      <span class="lg d-discount">הנחה</span>
+      <span class="lg-note">צבע התאריך = סטטוס השורה</span>
+    </div>
     <div class="tbl-wrap">
     <table class="ledger">
       <thead>
         <tr>
-          <th>#</th><th>תאריך</th><th>מס' אסמכתה</th><th>גורם</th>
-          <th>תיאור</th><th>סטטוס</th>
+          <th>#</th><th>תאריך</th><th>גורם</th><th>תיאור</th>
           <th>תשלום ששילמתי (₪)</th><th>תקבול שהתקבל (₪)</th>
         </tr>
       </thead>
       <tbody>
-        <tr class=''><td class='num'>1</td><td>2026-03-23</td><td>•••</td><td>כלמוביל</td><td class='desc'>שריון רכב (יונדאי סטאריה) - העברה בנקאית מבנק הפועלים </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'><span class='chip-out'>2,000.00</span></td><td class='money in'></td></tr>
-        <tr class=''><td class='num'>2</td><td>2026-06-15</td><td>•••</td><td>כלמוביל</td><td class='desc'>מקדמה 20% ממחיר הרכב - העברה בנקאית מבנק לאומי (קבלה •••) </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'><span class='chip-out'>40,000.00</span></td><td class='money in'></td></tr>
-        <tr class=''><td class='num'>3</td><td>2026-07-12</td><td>—</td><td>ביטוח לאומי</td><td class='desc'>מקדמה ממקדמה מהלוואה מקרן הלוואות (90% מתוך 67,327.78) - התקבלה לחשבון הבנק </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'></td><td class='money in'><span class='chip-in'>60,595.00</span></td></tr>
-        <tr class=''><td class='num'>4</td><td>2026-07-13</td><td>—</td><td>כלמוביל</td><td class='desc'>יתרה לתשלום עבור הרכב (לאחר מקדמה ופטור) </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'><span class='chip-out'>183,401.00</span></td><td class='money in'></td></tr>
-        <tr class=''><td class='num'>5</td><td>2026-07-17</td><td>—</td><td>משרד הרישוי</td><td class='desc'>הפרשי אגרה (אגרת רישוי) </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'><span class='chip-out'>2,684.00</span></td><td class='money in'></td></tr>
-        <tr class=''><td class='num'>6</td><td>2026-08-20</td><td>—</td><td>ביטוח</td><td class='desc'>תשלום ביטוח על הרכב (עלות עבורי) </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'><span class='chip-out'>5,400.00</span></td><td class='money in'></td></tr>
-        <tr class=''><td class='num'>7</td><td>2026-08-21</td><td>—</td><td>ביטוח לאומי</td><td class='desc'>תשלום ראשון מביטוח לאומי על חשבון אבזור רכב הנכים (מתוך 95% מהמתקון = 48,859.91) </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'></td><td class='money in'><span class='chip-in'>31,879.00</span></td></tr>
-        <tr class=''><td class='num'>8</td><td>2026-08-30</td><td>—</td><td>אצ&quot;מ</td><td class='desc'>תשלום ראשון לאצ&quot;מ עבור אבזור נכים (תשלום 1 מתוך 2) </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'><span class='chip-out'>31,879.00</span></td><td class='money in'></td></tr>
-        <tr class='info'><td class='num'>9</td><td>2026-08-30</td><td>—</td><td>אצ&quot;מ</td><td class='desc'>איסוף הרכב מאצ&quot;מ לאחר התקנת האבזור (לידיעה) </td><td class='status'><span class='badge b-info'>לידיעה</span></td><td class='money out'></td><td class='money in'></td></tr>
-        <tr class=''><td class='num'>10</td><td>2026-09-10</td><td>—</td><td>מכירת רכב קיים</td><td class='desc'>מכירת הרכב הקיים - פולקסווגן קראוול 2021, 4X2 Comfortline 2.0 (150 כ&quot;ס) - נמכר בפועל </td><td class='status'><span class='badge b-done'>בוצע</span></td><td class='money out'></td><td class='money in'><span class='chip-in'>135,000.00</span></td></tr>
-        <tr class='expected'><td class='num'>11</td><td>—</td><td>—</td><td>ביטוח לאומי</td><td class='desc'>תשלום משלים מביטוח לאומי - השלמת הפער ל-95% מהמתקון (48,859.91 − 31,879.00) </td><td class='status'><span class='badge b-expected'>צפוי</span></td><td class='money out'></td><td class='money in'><span class='chip-in'>16,980.91</span></td></tr>
-        <tr class='expected'><td class='num'>12</td><td>—</td><td>—</td><td>ביטוח לאומי</td><td class='desc'>השלמת ההלוואה מקרן הלוואות - 10% הנותרים (60,595 = 90% → 100% = 67,327.78) </td><td class='status'><span class='badge b-expected'>צפוי</span></td><td class='money out'></td><td class='money in'><span class='chip-in'>6,732.78</span></td></tr>
-        <tr class='discount'><td class='num'>13</td><td>—</td><td>—</td><td>אצ&quot;מ</td><td class='desc'>הנחות אצ&quot;מ (מקוזזות מהתשלום הסופי): 5% מהמתקון 2,571.57 ₪ - משלם רק 95%, כסכום ביטוח לאומי + הנחה נוספת בגין ביטוח שנה ראשונה ששולם ע&quot;י אצ&quot;מ 5,000.00 ₪ = סה&quot;כ הנחות 7,571.57 ₪ </td><td class='status'><span class='badge b-disc'>הנחה</span></td><td class='money out'></td><td class='money in'></td></tr>
-        <tr class='expected'><td class='num'>14</td><td>—</td><td>—</td><td>אצ&quot;מ</td><td class='desc'>תשלום סופי לאצ&quot;מ וסגירת חשבון (תשלום 2 מתוך 2): יתרת המתקון 19,552.48 בניכוי הנחות 7,571.57 - לאחר קבלת התשלום המשלים מביטוח לאומי </td><td class='status'><span class='badge b-expected'>צפוי</span></td><td class='money out'><span class='chip-out'>11,980.91</span></td><td class='money in'></td></tr>
+        <tr class='done'><td class='num'>1</td><td class='date d-done'><span>2026-03-23</span></td><td class='party'>כלמוביל</td><td class='desc'>שריון רכב (יונדאי סטאריה) - העברה בנקאית מבנק הפועלים</td><td class='money out'><span class='chip-out'>2,000</span></td><td class='money in'></td></tr>
+        <tr class='done'><td class='num'>2</td><td class='date d-done'><span>2026-06-15</span></td><td class='party'>כלמוביל</td><td class='desc'>מקדמה 20% ממחיר הרכב - העברה בנקאית מבנק לאומי</td><td class='money out'><span class='chip-out'>40,000</span></td><td class='money in'></td></tr>
+        <tr class='done'><td class='num'>3</td><td class='date d-done'><span>2026-07-12</span></td><td class='party'>ביטוח לאומי</td><td class='desc'>מקדמה מהלוואה מקרן הלוואות (90% מתוך 67,328) - התקבלה לחשבון הבנק</td><td class='money out'></td><td class='money in'><span class='chip-in'>60,595</span></td></tr>
+        <tr class='done'><td class='num'>4</td><td class='date d-done'><span>2026-07-13</span></td><td class='party'>כלמוביל</td><td class='desc'>יתרה לתשלום עבור הרכב (לאחר מקדמה ופטור)</td><td class='money out'><span class='chip-out'>183,401</span></td><td class='money in'></td></tr>
+        <tr class='done'><td class='num'>5</td><td class='date d-done'><span>2026-07-17</span></td><td class='party'>משרד הרישוי</td><td class='desc'>הפרשי אגרה (אגרת רישוי)</td><td class='money out'><span class='chip-out'>2,684</span></td><td class='money in'></td></tr>
+        <tr class='done'><td class='num'>6</td><td class='date d-done'><span>2026-08-20</span></td><td class='party'>ביטוח</td><td class='desc'>תשלום ביטוח על הרכב (עלות עבורי)</td><td class='money out'><span class='chip-out'>5,400</span></td><td class='money in'></td></tr>
+        <tr class='done'><td class='num'>7</td><td class='date d-done'><span>2026-08-21</span></td><td class='party'>ביטוח לאומי</td><td class='desc'>תשלום ראשון על חשבון אבזור רכב הנכים (מתוך 95% מהמתקון = 48,860)</td><td class='money out'></td><td class='money in'><span class='chip-in'>31,879</span></td></tr>
+        <tr class='done'><td class='num'>8</td><td class='date d-done'><span>2026-08-30</span></td><td class='party'>אצ&quot;מ</td><td class='desc'>תשלום ראשון עבור אבזור נכים (תשלום 1 מתוך 2)</td><td class='money out'><span class='chip-out'>31,879</span></td><td class='money in'></td></tr>
+        <tr class='info'><td class='num'>9</td><td class='date d-info'><span>2026-08-30</span></td><td class='party'>אצ&quot;מ</td><td class='desc'>איסוף הרכב מאצ&quot;מ לאחר התקנת האבזור (לידיעה)</td><td class='money out'></td><td class='money in'></td></tr>
+        <tr class='done'><td class='num'>10</td><td class='date d-done'><span>2026-09-10</span></td><td class='party'>מכירת רכב קיים</td><td class='desc'>מכירת הרכב הקיים - פולקסווגן קראוול 2021 - נמכר בפועל</td><td class='money out'></td><td class='money in'><span class='chip-in'>135,000</span></td></tr>
+        <tr class='expected'><td class='num'>11</td><td class='date d-expected'><span>צפוי</span></td><td class='party'>ביטוח לאומי</td><td class='desc'>תשלום משלים - השלמת הפער ל-95% מהמתקון (48,860 − 31,879)</td><td class='money out'></td><td class='money in'><span class='chip-in'>16,981</span></td></tr>
+        <tr class='expected'><td class='num'>12</td><td class='date d-expected'><span>צפוי</span></td><td class='party'>ביטוח לאומי</td><td class='desc'>השלמת ההלוואה מקרן הלוואות - 10% הנותרים (60,595 = 90% → 100% = 67,328)</td><td class='money out'></td><td class='money in'><span class='chip-in'>6,733</span></td></tr>
+        <tr class='discount'><td class='num'>13</td><td class='date d-discount'><span>הנחה</span></td><td class='party'>אצ&quot;מ</td><td class='desc'>הנחות (מקוזזות מהתשלום הסופי): 5% מהמתקון 2,572 ₪ - משלם רק 95%, כסכום ביטוח לאומי + הנחה נוספת בגין ביטוח שנה ראשונה 5,000 ₪ = סה&quot;כ 7,572 ₪</td><td class='money out'></td><td class='money in'></td></tr>
+        <tr class='expected'><td class='num'>14</td><td class='date d-expected'><span>צפוי</span></td><td class='party'>אצ&quot;מ</td><td class='desc'>תשלום סופי וסגירת חשבון (תשלום 2 מתוך 2): יתרת המתקון 19,552 בניכוי הנחות 7,572 - לאחר קבלת התשלום המשלים מביטוח לאומי</td><td class='money out'><span class='chip-out'>11,981</span></td><td class='money in'></td></tr>
       </tbody>
       <tfoot>
         <tr>
-          <td class="tot-lbl" colspan="6">סה"כ</td>
-          <td class="tot-out">277,344.91 ₪</td>
-          <td class="tot-in">251,187.69 ₪</td>
+          <td class="tot-lbl" colspan="4">סה"כ</td>
+          <td class="tot-out">277,345 ₪</td>
+          <td class="tot-in">251,188 ₪</td>
         </tr>
         <tr>
-          <td class="net-lbl" colspan="6">עלות נטו עבורי (תשלומים פחות תקבולים)</td>
-          <td class="net-val" colspan="2">26,157.22 ₪</td>
+          <td class="net-lbl" colspan="4">עלות נטו עבורי (תשלומים פחות תקבולים)</td>
+          <td class="net-val" colspan="2">26,157 ₪</td>
         </tr>
       </tfoot>
     </table>
     </div>
 
     <div class="panels">
-      <div class='panel'><h3>פירוט מחיר הרכב (עדכני מכלמוביל)</h3><div class='pr-list'><div class='pr-row k-total'><span>מחיר הרכב</span><b>330,030.00 ₪</b></div><div class='pr-row k-paid'><span>מקדמה ששולמה</span><b>42,000.00 ₪</b></div><div class='pr-row k-benefit'><span>פטור / הלוואה עומדת (ביטוח לאומי)</span><b>104,629.00 ₪</b></div><div class='pr-row k-due'><span>יתרה לתשלום</span><b>183,401.00 ₪</b></div></div></div>
-      <div class='panel'><h3>אבזור נכים (אצ&quot;מ / ביטוח לאומי)</h3><div class='scroll'><table class='acc-tbl'><thead><tr><th>קוד</th><th>אביזר</th><th>מחיר</th></tr></thead><tbody><tr><td class='num'>7</td><td>רצפת עץ וציפוי נגד החלקה</td><td class='money'>3,506.96 ₪</td></tr><tr><td class='num'>11</td><td>מעלית פנימית</td><td class='money'>32,340.26 ₪</td></tr><tr><td class='num'>25</td><td>נועל כסא גלגלים או מיטה בעמדת הסעה</td><td class='money'>3,431.44 ₪</td></tr><tr><td class='num'>55</td><td>חגורת בטיחות בעמדת הסעה</td><td class='money'>1,052.56 ₪</td></tr><tr><td class='num'>417</td><td>מושב מתקפל לדופן למלווה כולל חגורת בטיחות</td><td class='money'>11,100.26 ₪</td></tr></tbody><tfoot><tr class='acc-total'><td colspan='2'>סה"כ מחירון</td><td class='money'>51,431.48 ₪</td></tr><tr class='acc-btl'><td colspan='2'>חלק ביטוח לאומי (95%)</td><td class='money'>48,859.91 ₪</td></tr><tr class='acc-user'><td colspan='2'>השתתפות עצמית (5%)</td><td class='money'>2,571.57 ₪</td></tr><tr class='acc-disc'><td colspan='2'>הנחת אצ&quot;מ - ביטול ההשתתפות העצמית (5%)</td><td class='money'>−2,571.57 ₪</td></tr><tr class='acc-disc'><td colspan='2'>הנחה נוספת - ביטוח שנה ראשונה ע&quot;י אצ&quot;מ</td><td class='money'>−5,000.00 ₪</td></tr><tr class='acc-total'><td colspan='2'>סה&quot;כ לתשלום לאצ&quot;מ (51,431.48 − 7,571.57)</td><td class='money'>43,859.91 ₪</td></tr><tr class='acc-user'><td colspan='2'>שולם - תשלום 1 (30.08.2026)</td><td class='money'>31,879.00 ₪</td></tr><tr class='acc-btl'><td colspan='2'>יתרה לתשלום 2 - סגירת חשבון</td><td class='money'>11,980.91 ₪</td></tr><tr class='acc-btl'><td colspan='2'>ביטוח לאומי: התקבל 31,879.00 (21.08.2026) + משלים צפוי</td><td class='money'>16,980.91 ₪</td></tr></tfoot></table></div></div>
+      <div class='panel'><h3>פירוט מחיר הרכב (עדכני מכלמוביל)</h3><div class='pr-list'><div class='pr-row k-total'><span>מחיר הרכב</span><b>330,030 ₪</b></div><div class='pr-row k-paid'><span>מקדמה ששולמה</span><b>42,000 ₪</b></div><div class='pr-row k-benefit'><span>פטור / הלוואה עומדת (ביטוח לאומי)</span><b>104,629 ₪</b></div><div class='pr-row k-due'><span>יתרה לתשלום</span><b>183,401 ₪</b></div></div></div>
+      <div class='panel'><h3>אבזור נכים (אצ&quot;מ / ביטוח לאומי)</h3><div class='scroll'><table class='acc-tbl'><thead><tr><th>קוד</th><th>אביזר</th><th>מחיר</th></tr></thead><tbody><tr><td class='num'>7</td><td>רצפת עץ וציפוי נגד החלקה</td><td class='money'>3,507 ₪</td></tr><tr><td class='num'>11</td><td>מעלית פנימית</td><td class='money'>32,340 ₪</td></tr><tr><td class='num'>25</td><td>נועל כסא גלגלים או מיטה בעמדת הסעה</td><td class='money'>3,431 ₪</td></tr><tr><td class='num'>55</td><td>חגורת בטיחות בעמדת הסעה</td><td class='money'>1,053 ₪</td></tr><tr><td class='num'>417</td><td>מושב מתקפל לדופן למלווה כולל חגורת בטיחות</td><td class='money'>11,100 ₪</td></tr></tbody><tfoot><tr class='acc-total'><td colspan='2'>סה"כ מחירון</td><td class='money'>51,431 ₪</td></tr><tr class='acc-btl'><td colspan='2'>חלק ביטוח לאומי (95%)</td><td class='money'>48,860 ₪</td></tr><tr class='acc-user'><td colspan='2'>השתתפות עצמית (5%)</td><td class='money'>2,572 ₪</td></tr><tr class='acc-disc'><td colspan='2'>הנחת אצ&quot;מ - ביטול ההשתתפות העצמית (5%)</td><td class='money'>−2,572 ₪</td></tr><tr class='acc-disc'><td colspan='2'>הנחה נוספת - ביטוח שנה ראשונה ע&quot;י אצ&quot;מ</td><td class='money'>−5,000 ₪</td></tr><tr class='acc-total'><td colspan='2'>סה&quot;כ לתשלום לאצ&quot;מ (51,431 − 7,572)</td><td class='money'>43,860 ₪</td></tr><tr class='acc-user'><td colspan='2'>שולם - תשלום 1 (30.08.2026)</td><td class='money'>31,879 ₪</td></tr><tr class='acc-btl'><td colspan='2'>יתרה לתשלום 2 - סגירת חשבון</td><td class='money'>11,981 ₪</td></tr><tr class='acc-btl'><td colspan='2'>ביטוח לאומי: התקבל 31,879.00 (21.08.2026) + משלים צפוי</td><td class='money'>16,981 ₪</td></tr></tfoot></table></div></div>
     </div>
 
     <div class="panels">
@@ -217,7 +244,7 @@
 
     <section class="notes">
       <h3>הערות</h3>
-      <ul><li>כלמוביל - החברה ממנה נרכש הרכב החדש (יונדאי סטאריה).</li><li>אצ&quot;מ (א.צ.מ צפון בע&quot;מ) - החברה הממתקנת את הרכב באבזרי נכים. ביטוח לאומי מעביר לי את הסכום ואני מעביר לאצ&quot;מ.</li><li>ביטוח לאומי (ניידות) - מעביר הטבות: הלוואה עומדת (פטור ממסים), הלוואה מקרן הלוואות, והלוואה לאבזרים.</li><li>פטור / הלוואה עומדת מקוזז ישירות מול מחיר הרכב בכלמוביל (הנחה) ולכן אינו נספר כתקבול מזומן בטבלה, אלא מוצג בפירוט מחיר הרכב.</li><li>הלוואה מקרן הלוואות והלוואה עומדת הופכות למענק (אין להחזירן) בהתקיים התנאים.</li><li>מתקון (אצ&quot;מ): התשלום מתבצע בשלבים - מקדמה/פיקדון לאצ&quot;מ, תשלום ראשון של בל&quot;ל (31,879 ₪, כ-65% מחלקו של בל&quot;ל שהוא 95% מהמתקון), ותשלום משלים בסגירת החשבון. בל&quot;ל מעביר אליי ואני מעביר לאצ&quot;מ. אצ&quot;מ ויתרה על ההשתתפות העצמית (5%) ונתנה הנחה נוספת של 5,000 ₪ בגין ביטוח השנה הראשונה (מתוך 5,400 ₪ ששילמתי על אותו ביטוח ב-20.08.2026) - כך שסך התשלום שלי לאצ&quot;מ (43,859.91 ₪) נמוך ב-5,000 ₪ מהסכום שמתקבל מבל&quot;ל (48,859.91 ₪).</li><li>מה שנותר לקבל מבל&quot;ל: התשלום המשלים לאבזור (16,980.91 ₪) ו-10% הנותרים מההלוואה מקרן הלוואות (6,732.78 ₪). לא ידוע על סכום קיזוז/השלמה נוסף.</li><li>נושאים מהרכב הקודם (החלפת קאדי בקראוול, 2021) שמובאים בחשבון גם כאן: הפרדה בין עלויות הרכב לעלויות המתקון; הבחנה בין מי ששילם (אני / בל&quot;ל ישירות לחברה / בל&quot;ל לחשבוני); תג חניה לנכה והנחה באגרת רישוי; ומכירת הרכב הקודם כתקבול.</li><li>הקראוול נמכר בפועל ב-10.09.2026 תמורת 135,000 ₪ (הערכת מחירון יד2 לפני המכירה הייתה 143,800 ₪ - פער של 8,800 ₪). לשם השוואה, ביטוח לאומי השתמש ב&quot;מחיר רכב קודם&quot; של 91,800 ₪ (ערך ספר מופחת לרכב נכים) בחישוב ההלוואה.</li><li>עלות נטו = סך התשלומים ששילמתי בפועל פחות סך התקבולים שקיבלתי (הלוואות/מענקים ומכירת הרכב הישן).</li></ul>
+      <ul><li>כלמוביל - החברה ממנה נרכש הרכב החדש (יונדאי סטאריה).</li><li>אצ&quot;מ (א.צ.מ צפון בע&quot;מ) - החברה הממתקנת את הרכב באבזרי נכים. ביטוח לאומי מעביר לי את הסכום ואני מעביר לאצ&quot;מ.</li><li>ביטוח לאומי (ניידות) - מעביר הטבות: הלוואה עומדת (פטור ממסים), הלוואה מקרן הלוואות, והלוואה לאבזרים.</li><li>פטור / הלוואה עומדת מקוזז ישירות מול מחיר הרכב בכלמוביל (הנחה) ולכן אינו נספר כתקבול מזומן בטבלה, אלא מוצג בפירוט מחיר הרכב.</li><li>הלוואה מקרן הלוואות והלוואה עומדת הופכות למענק (אין להחזירן) בהתקיים התנאים.</li><li>מתקון (אצ&quot;מ): התשלום מתבצע בשלבים - מקדמה/פיקדון לאצ&quot;מ, תשלום ראשון של בל&quot;ל (31,879 ₪, כ-65% מחלקו של בל&quot;ל שהוא 95% מהמתקון), ותשלום משלים בסגירת החשבון. בל&quot;ל מעביר אליי ואני מעביר לאצ&quot;מ. אצ&quot;מ ויתרה על ההשתתפות העצמית (5%) ונתנה הנחה נוספת של 5,000 ₪ בגין ביטוח השנה הראשונה (מתוך 5,400 ₪ ששילמתי על אותו ביטוח ב-20.08.2026) - כך שסך התשלום שלי לאצ&quot;מ (43,860 ₪) נמוך ב-5,000 ₪ מהסכום שמתקבל מבל&quot;ל (48,860 ₪).</li><li>מה שנותר לקבל מבל&quot;ל: התשלום המשלים לאבזור (16,981 ₪) ו-10% הנותרים מההלוואה מקרן הלוואות (6,733 ₪). לא ידוע על סכום קיזוז/השלמה נוסף.</li><li>נושאים מהרכב הקודם (החלפת קאדי בקראוול, 2021) שמובאים בחשבון גם כאן: הפרדה בין עלויות הרכב לעלויות המתקון; הבחנה בין מי ששילם (אני / בל&quot;ל ישירות לחברה / בל&quot;ל לחשבוני); תג חניה לנכה והנחה באגרת רישוי; ומכירת הרכב הקודם כתקבול.</li><li>הקראוול נמכר בפועל ב-10.09.2026 תמורת 135,000 ₪ (הערכת מחירון יד2 לפני המכירה הייתה 143,800 ₪ - פער של 8,800 ₪). לשם השוואה, ביטוח לאומי השתמש ב&quot;מחיר רכב קודם&quot; של 91,800 ₪ (ערך ספר מופחת לרכב נכים) בחישוב ההלוואה.</li><li>עלות נטו = סך התשלומים ששילמתי בפועל פחות סך התקבולים שקיבלתי (הלוואות/מענקים ומכירת הרכב הישן).</li></ul>
     </section>
 
     <footer class="ft">
